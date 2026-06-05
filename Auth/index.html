@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folio — Welcome</title>
+    <link rel="stylesheet" href="Auth_style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mesh-gradient"></div>
+
+    <div class="floating-books-container">
+        <div class="floating-book book-graphic-1">📖</div>
+        <div class="floating-book book-graphic-2">✨</div>
+        <div class="floating-book book-graphic-3">📚</div>
+        <div class="floating-book book-graphic-4">✍️</div>
+        <div class="floating-book book-graphic-5">🕯️</div>
+        <div class="floating-book book-graphic-6">📜</div>
+    </div>
+
+    <div class="auth-container">
+        <div class="brand-header">
+            <span class="brand-logo">F</span>
+            <h1 class="brand-name">Folio</h1>
+        </div>
+
+        <div class="card-perspective">
+            <div class="auth-card" id="authCard">
+                
+                <div class="card-face card-front">
+                    <h2>Welcome Back! ✨</h2>
+                    <p class="subtitle">Your next chapter is waiting inside.</p>
+                    
+                    <form id="loginForm" onsubmit="handleAuth(event)">
+                        <div class="input-group">
+                            <label for="loginEmail">Email Address</label>
+                            <input type="email" id="loginEmail" placeholder="hello@sharvari.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <span>Enter Folio ➔</span>
+                            <div class="btn-liquid"></div>
+                        </button>
+                    </form>
+                    
+                    <div class="auth-switch">
+                        <p>New here? <button type="button" onclick="toggleCard()">Create an account</button></p>
+                    </div>
+                </div>
+
+                <div class="card-face card-back">
+                    <h2>Join the Club 📚</h2>
+                    <p class="subtitle">Track, review, and chat with your books.</p>
+                    
+                    <form id="signupForm" onsubmit="handleAuth(event)">
+                        <div class="input-group">
+                            <label for="signupName">Your First Name</label>
+                            <input type="text" id="signupName" placeholder="Enter Name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="signupEmail">Email Address</label>
+                            <input type="email" id="signupEmail" placeholder="Enter email id" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="signupPassword">Create Secure Password</label>
+                            <input type="password" id="signupPassword" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <span>Claim My Shelf ➔</span>
+                            <div class="btn-liquid"></div>
+                        </button>
+                    </form>
+                    
+                    <div class="auth-switch">
+                        <p>Already a member? <button type="button" onclick="toggleCard()">Log in instead</button></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="success-overlay" id="successOverlay">
+        <div class="spinner-graphic"></div>
+        <h3 class="success-title">Curating your customized library...</h3>
+    </div>
+
+    <script src="Auth_script.js"></script>
+</body>
+</html>

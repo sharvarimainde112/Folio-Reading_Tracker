@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folio — Discover New Stories</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="discover-style.css">
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <aside class="sidebar">
+            <div class="brand-zone">
+                <div class="logo-box">F</div>
+                <h1 class="brand-text">Folio</h1>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="../home/index.html" class="nav-item">
+                    <span class="nav-icon">🏠</span> Home
+                </a>
+                <a href="../Shelves/shelves.html" class="nav-item">
+                    <span class="nav-icon">📚</span> My Shelves
+                </a>
+                <a href="../Discover/index.html" class="nav-item active">
+                    <span class="nav-icon">🔍</span> Discover
+                </a>
+                <a href="../Ai-coach/index.html" class="nav-item">
+                    <span class="nav-icon">✨</span> AI Coach <span class="badge-ai">AI</span>
+                </a>
+            </nav>
+
+            <div class="user-profile-widget">
+                <div class="avatar-circle">S</div>
+                <div class="user-meta">
+                    <div class="username-label" id="profileName">Sharvari</div>
+                    <div class="streak-sub">7 day streak 🔥</div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content header-animate">
+            
+            <section class="discover-hero">
+                <h2 class="hero-title">Find your next favorite story...</h2>
+                <div class="search-wrapper">
+                    <input 
+                        type="text" 
+                        id="discoverSearchInput" 
+                        placeholder="Search books by title, author, keywords..." 
+                        autocomplete="off"
+                    >
+                </div>
+            </section>
+
+            <section class="results-section">
+                <div class="section-header-meta">
+                    <h3 class="section-tag" id="resultsCountLabel">Explore Collection</h3>
+                </div>
+                
+                <div class="grid-layout" id="discoverGridContainer">
+                    </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="discover-script.js"></script>
+</body>
+</html>

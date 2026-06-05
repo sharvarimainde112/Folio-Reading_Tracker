@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folio — Dashboard</title>
+    <link rel="stylesheet" href="home_style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <aside class="sidebar">
+            <div class="brand-zone">
+                <span class="logo-box">F</span>
+                <span class="brand-text">Folio</span>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="home.html" class="nav-item active">
+                    <span class="nav-icon">🏠</span> Home
+                </a>
+                <a href="../Shelves/shelves.html" class="nav-item">
+                    <span class="nav-icon">📚</span> My Shelves
+                </a>
+                <a href="../Discover/index.html" class="nav-item">
+                    <span class="nav-icon">🔍</span> Discover
+                </a>
+                <a href="../Ai-coach/index.html" class="nav-item">
+                    <span class="nav-icon">✨</span> AI Coach <span class="badge-ai">AI</span>
+                </a>
+            </nav>
+
+            <div class="user-profile-widget" id="userProfileNode">
+                <div class="avatar-circle">S</div>
+                <div class="user-meta">
+                    <h4 class="username-label" id="profileName">Sharvari</h4>
+                    <p class="streak-sub">7 day streak 🔥</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="top-bar header-animate">
+                <div class="welcome-heading">
+                    <h2 id="greetingText">Good evening, Sharvari! ✨</h2>
+                    <p class="motto">You've read <strong class="highlight">3 books</strong> this month. Keep going!</p>
+                </div>
+                
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="globalSearchInput" placeholder="Search books by title or author... (⌘K)" autocomplete="off">
+                    
+                    <div class="search-dropdown" id="searchDropdown">
+                        <div class="dropdown-header">Books Repository Index</div>
+                        <div class="results-wrapper" id="searchResultsWrapper">
+                            </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="grid-layout">
+                
+                <div class="card card-large card-animate">
+                    <span class="section-tag">Currently Reading</span>
+                    <div class="currently-reading-box">
+                        <div class="book-cover-wrapper">
+                            <div class="book-cover-mock">
+                                <span class="cover-title">The Midnight Library</span>
+                                <span class="cover-author">Matt Haig</span>
+                            </div>
+                        </div>
+                        <div class="book-progress-details">
+                            <h3>The Midnight Library</h3>
+                            <p class="author-sub">by Matt Haig</p>
+                            
+                            <div class="progress-container-metric">
+                                <span class="progress-label">Page 184 of 304</span>
+                                <span class="progress-percentage">61%</span>
+                            </div>
+                            <div class="progress-bar-track">
+                                <div class="progress-bar-fill" style="width: 61%;"></div>
+                            </div>
+                            
+                            <div class="button-row">
+                                <button class="btn-secondary">Update Progress</button>
+                                <button class="btn-text-action" onclick="window.location.href='../book-details/book-details.html'">View Details →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-medium card-animate">
+                    <span class="section-tag">Reading Stats</span>
+                    <div class="stats-box-grid">
+                        <div class="stat-pill">
+                            <span class="stat-num">24</span>
+                            <span class="stat-lbl">Books Read</span>
+                        </div>
+                        <div class="stat-pill">
+                            <span class="stat-num">7</span>
+                            <span class="stat-lbl">Day Streak</span>
+                        </div>
+                        <div class="stat-pill">
+                            <span class="stat-num">3</span>
+                            <span class="stat-lbl">This Month</span>
+                        </div>
+                        <div class="stat-pill">
+                            <span class="stat-num">4.2 ★</span>
+                            <span class="stat-lbl">Avg Rating</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mini-chart-container">
+                        <p class="chart-title">Books Per Month (2026)</p>
+                        <div class="bar-chart-flex">
+                            <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 35%;"></div><span>J</span></div>
+                            <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 55%;"></div><span>F</span></div>
+                            <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 20%;"></div><span>M</span></div>
+                            <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 75%;"></div><span>A</span></div>
+                            <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 45%;"></div><span>M</span></div>
+                            <div class="chart-bar-wrapper"><div class="chart-bar active" style="height: 90%;"></div><span>J</span></div>
+                        </div>
+                    </div>
+               </div>
+
+                <div class="card card-small card-animate" onclick="window.location.href='../shelves/shelves.html'">
+                    <span class="section-tag">My Shelves</span>
+                    <div class="shelf-preview-tile">
+                        <div class="folder-icon-mock">📂</div>
+                        <div>
+                            <h4>Want to Read</h4>
+                            <p class="counter-sub">14 books cataloged</p>
+                        </div>
+                        <span class="arrow-indicator">➔</span>
+                    </div>
+                </div>
+
+                <div class="card card-banner card-animate" onclick="window.location.href='../ai-coach/ai-coach.html'">
+                    <div class="banner-content">
+                        <span class="ai-pill-tag">AI Book Coach</span>
+                        <p class="ai-quote">"Based on your love of Matt Haig, I have 3 perfect recommendations tailored for your mood tonight."</p>
+                        <button class="btn-ai-chat">Chat with Coach →</button>
+                    </div>
+                    <div class="banner-graphic-sphere"></div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="home_script.js"></script>
+</body>
+</html>

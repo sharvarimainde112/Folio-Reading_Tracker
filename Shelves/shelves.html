@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folio — My Shelves</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shelves-style.css">
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <aside class="sidebar">
+            <div class="brand-zone">
+                <div class="logo-box">F</div>
+                <h1 class="brand-text">Folio</h1>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="../home/index.html" class="nav-item">
+                    <span class="nav-icon">🏠</span> Home
+                </a>
+                <a href="../Shelves/shelves.html" class="nav-item active">
+                    <span class="nav-icon">📚</span> My Shelves
+                </a>
+                <a href="../Discover/index.html" class="nav-item">
+                    <span class="nav-icon">🔍</span> Discover
+                </a>
+                <a href="../Ai-coach/index.html" class="nav-item">
+                    <span class="nav-icon">✨</span> AI Coach <span class="badge-ai">AI</span>
+                </a>
+            </nav>
+
+            <div class="user-profile-widget">
+                <div class="avatar-circle">S</div>
+                <div class="user-meta">
+                    <div class="username-label">Sharvari</div>
+                    <div class="streak-sub">7 day streak 🔥</div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content header-animate">
+            
+            <header class="shelves-header">
+                <h2 class="shelves-title">Your Personal Library</h2>
+                <p class="shelves-subtitle">Organize and track your literary journey.</p>
+            </header>
+
+            <section class="board-container">
+                
+                <div class="shelf-column column-animate" id="shelf-want-to-read">
+                    <div class="column-header accent-beige">
+                        <span class="dot-indicator">•</span>
+                        <h3 class="column-title">Want to Read</h3>
+                        <span class="counter-badge" id="count-want-to-read">0</span>
+                    </div>
+                    <div class="cards-dropzone" id="zone-want-to-read"></div>
+                </div>
+
+                <div class="shelf-column column-animate" id="shelf-reading">
+                    <div class="column-header accent-sage">
+                        <span class="dot-indicator">•</span>
+                        <h3 class="column-title">Currently Reading</h3>
+                        <span class="counter-badge" id="count-reading">0</span>
+                    </div>
+                    <div class="cards-dropzone" id="zone-reading"></div>
+                </div>
+
+                <div class="shelf-column column-animate" id="shelf-completed">
+                    <div class="column-header accent-lavender">
+                        <span class="dot-indicator">•</span>
+                        <h3 class="column-title">Completed</h3>
+                        <span class="counter-badge" id="count-completed">0</span>
+                    </div>
+                    <div class="cards-dropzone" id="zone-completed"></div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script src="shelves-script.js"></script>
+</body>
+</html>

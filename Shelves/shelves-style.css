@@ -1,0 +1,430 @@
+/* --- APP GLOBAL STYLE DESIGN TOKENS --- */
+:root {
+    --bg-cream: #FDFBF7;
+    --card-beige: #F7F3EB;
+    --sage-green: #607E65;
+    --sage-light: #E2EFE0;
+    --lavender: #D3C5E5;
+    --lavender-light: #F1EDF7;
+    --terracotta: #D9836C;
+    --text-dark: #2C2622;
+    --text-muted: #70665E;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --transition-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+    --transition-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --shadow-subtle: 0 12px 32px rgba(44, 38, 34, 0.04);
+    --shadow-deep: 0 20px 40px rgba(44, 38, 34, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- SIDEBAR WORKSPACE FIXED ALIGNMENT --- */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 280px;
+    background-color: #2C2622;
+    color: #F7F3EB;
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+}
+
+.brand-zone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 48px;
+}
+
+.logo-box {
+    background-color: var(--sage-green);
+    color: var(--bg-cream);
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    transform: rotate(-4deg);
+}
+
+.brand-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #B5AFA9;
+    text-decoration: none;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s var(--transition-smooth);
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: var(--bg-cream);
+    transform: translateX(4px);
+}
+
+.nav-item.active {
+    background-color: var(--sage-green);
+    color: var(--bg-cream);
+}
+
+.badge-ai {
+    background-color: var(--terracotta);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-left: auto;
+}
+
+.user-profile-widget {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 14px;
+    border-radius: var(--radius-md);
+}
+
+.avatar-circle {
+    width: 42px;
+    height: 42px;
+    background-color: var(--lavender);
+    color: var(--text-dark);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.username-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.streak-sub {
+    font-size: 12px;
+    color: #B5AFA9;
+}
+
+/* --- MAIN CANVAS STRUCTURE --- */
+.main-content {
+    margin-left: 280px;
+    flex-grow: 1;
+    padding: 48px 48px;
+    max-width: 1400px;
+    width: calc(100% - 280px);
+    display: flex;
+    flex-direction: column;
+}
+
+.shelves-header {
+    margin-bottom: 36px;
+}
+
+.shelves-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.shelves-subtitle {
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+/* --- THE TRI-SHELF BOARD VISUAL CONTAINER --- */
+.board-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+    flex-grow: 1;
+}
+
+/* Vertical Kanban Base Layout Component Columns */
+.shelf-column {
+    background-color: var(--card-beige);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    border: 1px solid rgba(44, 38, 34, 0.02);
+    box-shadow: var(--shadow-subtle);
+    display: flex;
+    flex-direction: column;
+    min-height: 680px;
+    opacity: 0; /* Animated sequentially via JavaScript load delays */
+}
+
+.column-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid rgba(44, 38, 34, 0.04);
+    margin-bottom: 20px;
+}
+
+.column-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    flex-grow: 1;
+}
+
+.counter-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background-color: rgba(44, 38, 34, 0.05);
+    color: var(--text-dark);
+}
+
+.cards-dropzone {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 580px;
+}
+
+/* --- CONTEXTUAL SYSTEM ACCENT PILLS --- */
+.accent-beige .dot-indicator { color: var(--terracotta); }
+.accent-sage .dot-indicator { color: var(--sage-green); }
+.accent-lavender .dot-indicator { color: var(--lavender); }
+
+/* --- THE ANATOMY OF A COMPACT SHELF BOOK CARD --- */
+.shelf-book-card {
+    background-color: var(--bg-cream);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    border: 1px solid rgba(44, 38, 34, 0.03);
+    display: flex;
+    gap: 16px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(44, 38, 34, 0.02);
+    transition: transform 0.4s var(--transition-spring), box-shadow 0.4s var(--transition-smooth);
+}
+
+.shelf-book-card:hover {
+    transform: scale(1.025);
+    box-shadow: var(--shadow-deep);
+}
+
+/* Rounded Thumbnail Covers */
+.card-thumbnail-frame {
+    width: 64px;
+    height: 92px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: -2px 4px 8px rgba(44, 38, 34, 0.1);
+    overflow: hidden;
+}
+
+.thumb-letter {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    color: #FFF;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Card Metadata Grid Block */
+.card-meta-block {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0; /* Standard truncation shield reset */
+}
+
+.text-group {
+    margin-bottom: 8px;
+}
+
+.book-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-author {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+}
+
+/* --- CARD INTERNAL CONTEXT METRICS INTERFACES --- */
+.metric-row-container {
+    width: 100%;
+    margin-top: 4px;
+}
+
+/* Reading Progress Metric System */
+.compact-progress-track {
+    width: 100%;
+    height: 5px;
+    background-color: rgba(44, 38, 34, 0.06);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.compact-progress-fill {
+    height: 100%;
+    background-color: var(--sage-green);
+    border-radius: 3px;
+}
+
+.progress-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+/* Star Rating Visual Grid */
+.star-rating-row {
+    color: #F5A623; /* Classic gold star hue tint */
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+/* --- THE MANAGEMENT SHIFT MENU CONTROLLERS --- */
+.shelf-shift-container {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+}
+
+.btn-shift-trigger {
+    background-color: var(--card-beige);
+    border: 1px solid rgba(44, 38, 34, 0.08);
+    color: var(--text-dark);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+
+.btn-shift-trigger:hover {
+    background-color: #2C2622; /* High contrast charcoal */
+    color: var(--bg-cream);
+    border-color: #2C2622;
+}
+
+.shift-dropdown-menu {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    right: 0;
+    background-color: var(--bg-cream);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-deep);
+    border: 1px solid rgba(44, 38, 34, 0.08);
+    z-index: 50;
+    display: none;
+    overflow: hidden;
+    min-width: 140px;
+}
+
+.shift-dropdown-menu.open {
+    display: block;
+}
+
+.dropdown-opt {
+    width: 100%;
+    padding: 10px 12px;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: left;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdown-opt:hover {
+    background-color: var(--sage-light);
+}
+
+.dropdown-opt:not(:last-child) {
+    border-bottom: 1px solid rgba(44, 38, 34, 0.03);
+}
+
+/* --- COMPONENT TRANSITION FRAME TIMELINES --- */
+.header-animate {
+    opacity: 0;
+    animation: slideDownIn 0.6s var(--transition-smooth) forwards;
+}
+
+@keyframes slideDownIn {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* JS Target Trigger for Staggered Board Entrance Sequences */
+.column-glide-up-trigger {
+    animation: columnGlideUp 0.7s var(--transition-spring) forwards;
+}
+
+@keyframes columnGlideUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
+}

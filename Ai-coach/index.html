@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folio — AI Reading Coach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ai-coach-style.css">
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <aside class="sidebar">
+            <div class="brand-zone">
+                <div class="logo-box">F</div>
+                <h1 class="brand-text">Folio</h1>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="../home/index.html" class="nav-item">
+                    <span class="nav-icon">🏠</span> Home
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">📚</span> My Shelves
+                </a>
+                <a href="../Discover/index.html" class="nav-item">
+                    <span class="nav-icon">🔍</span> Discover
+                </a>
+                <a href="../Ai-coach/index.html" class="nav-item active">
+                    <span class="nav-icon">✨</span> AI Coach <span class="badge-ai">AI</span>
+                </a>
+            </nav>
+
+            <div class="user-profile-widget">
+                <div class="avatar-circle">S</div>
+                <div class="user-meta">
+                    <div class="username-label">Sharvari</div>
+                    <div class="streak-sub">7 day streak 🔥</div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content header-animate">
+            
+            <header class="coach-header">
+                <h2 class="coach-title">AI Reading Coach</h2>
+                <p class="coach-subtitle">Your personal literary guide.</p>
+            </header>
+
+            <section class="chat-interface-wrapper">
+                
+                <div class="conversation-window" id="chatScrollThread">
+                    
+                    <div class="chat-bubble coach-bubble">
+                        Hello Sharvari! I've been reviewing your reading logs. You're doing incredible with your 7-day streak. What shall we explore today? I can help you analyze hidden themes, construct custom quarterly reading plans, or map out book recommendations matched to your exact mood.
+                    </div>
+
+                </div>
+
+                <div class="input-panel-tray">
+                    
+                    <div class="suggestion-pills-row">
+                        <button class="action-pill-btn" data-prompt="Recommend a mood-based book">🎭 Recommend a mood-based book</button>
+                        <button class="action-pill-btn" data-prompt="Help me plan a reading goal">📅 Help me plan a reading goal</button>
+                        <button class="action-pill-btn" data-prompt="Give me a motivational quote">✍️ Give me a motivational quote</button>
+                    </div>
+
+                    <form class="message-composer-form" id="coachMessageForm" onsubmit="return false;">
+                        <input 
+                            type="text" 
+                            id="chatComposerInput" 
+                            placeholder="Message AI Coach..." 
+                            autocomplete="off"
+                            maxlength="1000"
+                        >
+                        <button type="submit" id="btnSendComposer" aria-label="Send Message">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                    </form>
+                    
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script src="ai-coach-script.js"></script>
+</body>
+</html>
