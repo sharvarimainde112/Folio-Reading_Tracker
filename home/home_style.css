@@ -368,12 +368,11 @@ body {
 /* MINI BAR CHART */
 .mini-chart-container { background-color: var(--bg-cream); padding: 16px; border-radius: var(--radius-md); }
 .chart-title { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; }
-.bar-chart-flex { display: flex; justify-content: space-between; align-items: flex-end; height: 60px; padding: 0 4px; }
-.chart-bar-wrapper { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 12%; }
-.chart-bar { width: 100%; background-color: rgba(96, 126, 101, 0.2); border-radius: 4px 4px 0 0; transition: height 1s ease-in-out; }
-.chart-bar.active { background: linear-gradient(to top, var(--sage-green), var(--terracotta)); }
+.bar-chart-flex { display: flex; justify-content: space-between; align-items: flex-end; height: 100px; padding: 0 4px; gap: 4px; }
+.chart-bar-wrapper { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; min-width: 20px; }
+.chart-bar { width: 70%; background-color: #C19A6B; border-radius: 4px 4px 0 0; transition: height 0.4s ease; min-width: 16px; }
+.chart-bar.active { background-color: #607E65; }
 .chart-bar-wrapper span { font-size: 10px; font-weight: 600; color: var(--text-muted); }
-
 /* ACCELERATOR COMPONENT */
 .shelf-preview-tile { display: flex; align-items: center; gap: 16px; width: 100%; }
 .folder-icon-mock { font-size: 28px; }
@@ -470,4 +469,228 @@ body {
 @keyframes slideUpIn {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
+}
+/* ── DAILY QUOTE ─────────────────────────────────────────────── */
+.daily-quote-section {
+    margin-top: 28px;
+    padding-top: 0;
+}
+.quote-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #E5DDD4, transparent);
+    margin-bottom: 24px;
+}
+.quote-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 0 24px;
+}
+.quote-icon {
+    font-size: 2rem;
+    color: #C19A6B;
+    line-height: 1;
+    font-family: 'DM Serif Display', serif;
+}
+.quote-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: #4A3F35;
+    line-height: 1.7;
+    max-width: 480px;
+}
+.quote-author {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #9B8E82;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* ── READING GOAL ────────────────────────────────────────────── */
+.reading-goal-section {
+    margin-top: 8px;
+    padding: 0 4px;
+}
+.goal-prompt {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #4A3F35;
+    margin-bottom: 4px;
+    text-align: center;
+    font-family: 'DM Serif Display', serif;
+}
+.goal-subtext {
+    font-size: 0.78rem;
+    color: #9B8E82;
+    text-align: center;
+    margin-bottom: 14px;
+    font-weight: 500;
+}
+.goal-input-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.goal-input-row input,
+.goal-edit-row input {
+    width: 90px;
+    padding: 9px 14px;
+    border: 1.5px solid #E5DDD4;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #FAF7F2;
+    color: #2C2416;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+.goal-input-row input:focus,
+.goal-edit-row input:focus {
+    border-color: #607E65;
+}
+.goal-save-btn {
+    padding: 9px 20px;
+    background: #607E65;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.goal-save-btn:hover {
+    background: #4F6B54;
+    transform: translateY(-1px);
+}
+.goal-cancel-btn {
+    padding: 9px 16px;
+    background: none;
+    border: 1.5px solid #E5DDD4;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.85rem;
+    color: #9B8E82;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.goal-cancel-btn:hover { background: #EEE8E0; }
+
+/* Goal progress */
+.goal-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+.goal-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #4A3F35;
+    font-family: 'DM Serif Display', serif;
+    margin-bottom: 2px;
+}
+.goal-edit-btn {
+    font-size: 0.75rem;
+    color: #9B8E82;
+    background: none;
+    border: 1px solid #E5DDD4;
+    border-radius: 8px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.goal-edit-btn:hover { background: #EEE8E0; }
+.goal-bar-track {
+    height: 10px;
+    background: #EEE8E0;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+.goal-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, #607E65, #8BAF90);
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.6s ease;
+}
+.goal-footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.goal-count {
+    font-size: 0.82rem;
+    color: #6B5E52;
+    font-weight: 500;
+}
+.goal-percent {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #607E65;
+}
+.goal-edit-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #EEE8E0;
+}
+
+.shelf-mini-stats {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #EEE8E0;
+}
+.shelf-mini-pill {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: #F5F0E8;
+    border-radius: 10px;
+    padding: 8px 4px;
+    font-size: 0.75rem;
+    color: #9B8E82;
+    font-weight: 500;
+}
+.shelf-mini-pill span:first-child {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #4A3F35;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 10px 16px;
+    background: none;
+    border: 1.5px solid #3a3228;
+    border-radius: 12px;
+    color: #9B8E82;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 12px;
+    text-align: left;
+}
+.logout-btn:hover {
+    background: #3a3228;
+    color: #FAF7F2;
 }

@@ -24,10 +24,10 @@ const BookSchema = new mongoose.Schema(
             default: ''
         },
         // Matches your frontend: "#4A5B6E", "#607E65" etc.
-        coverColor: {
-            type: String,
-            default: '#607E65'
-        },
+        thumbnail: {
+    type: String,
+    default: ''
+},
         // Matches your three shelf zones exactly
         status: {
             type: String,
@@ -41,6 +41,11 @@ const BookSchema = new mongoose.Schema(
             min: 0,
             max: 100
         },
+        // Total pages — needed for page number progress tracking
+totalPages: {
+    type: Number,
+    default: 0
+},
         // 0–5 stars
         rating: {
             type: Number,

@@ -1,116 +1,110 @@
-/**
- * --- CENTRAL COLLECTION BOOK REPOSITORY DATABASE SOURCE MOCK DATA ---
- * Featuring unique custom soft pastel canvas background hex variants
- */
-const discoverRepositoryDataset = [
-    {
-        id: "disc-01",
-        title: "The Midnight Library",
-        author: "Matt Haig",
-        description: "Between life and death there is a library containing infinite books of paths you could have traveled. A beautiful exploration of regrets and what truly makes life worth living.",
-        bgColor: "#C19A6B" // Warm leather bookcloth brown
-    },
-    {
-        id: "disc-02",
-        title: "The Silent Patient",
-        author: "Alex Michaelides",
-        description: "Alicia Berenson’s life is seemingly perfect. Then one evening, she shoots her husband five times in the face and never speaks another word, sparking an intense psychological investigation.",
-        bgColor: "#D9836C" // Core dynamic Terracotta
-    },
-    {
-        id: "disc-03",
-        title: "Babel",
-        author: "R.F. Kuang",
-        description: "An extraordinary historical fantasy exploring the power of language, the brutality of empire, and the magic of translation inside Oxford University's premier silver-working institute.",
-        bgColor: "#607E65" // Signature Sage Green
-    },
-    {
-        id: "disc-04",
-        title: "Atomic Habits",
-        author: "James Clear",
-        description: "A profoundly practical framework for reshaping your daily patterns. Learn how tiny 1% transformations can stack up to compound into monumental life-altering achievements.",
-        bgColor: "#7A9FB0" // Soft Powder Air Blue
-    },
-    {
-        id: "disc-05",
-        title: "Tomorrow, and Tomorrow, and Tomorrow",
-        author: "Gabrielle Zevin",
-        description: "Two brilliant childhood friends aestheticize their worlds by partnering up to launch a legendary video game studio, exploring love, loss, and creative companionship over thirty years.",
-        bgColor: "#D3C5E5" // Premium Lavender Iris tint
-    },
-    {
-        id: "disc-06",
-        title: "Normal People",
-        author: "Sally Rooney",
-        description: "An intimate chronicle tracking the complex social and romantic intricacies between Connell and Marianne as they navigate class lines from high school into university years.",
-        bgColor: "#E2C391" // Muted Gold Wheat canvas
-    },
-    {
-        id: "disc-07",
-        title: "Crying in H Mart",
-        author: "Michelle Zauner",
-        description: "A powerful, poignant memoir detailing the experiences of growing up Korean-American, finding voice and identity, and navigating profound grief through the beautiful lens of food.",
-        bgColor: "#C97A93" // Distressed Coral Rose dust
-    },
-    {
-        id: "disc-08",
-        title: "The Starless Sea",
-        author: "Erin Morgenstern",
-        description: "A subterranean labyrinth of stories hidden deep beneath the surface of the earth. Pirates, acolytes, and keys fill this enchanting, lyrical love letter to the art of storytelling.",
-        bgColor: "#4A5B6E" // Vintage Slate Deep Indigo
-    }
+const coverColorPalette = [
+    "#C19A6B", "#D9836C", "#607E65", "#7A9FB0",
+    "#D3C5E5", "#E2C391", "#C97A93", "#4A5B6E"
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-    const gridContainer = document.getElementById("discoverGridContainer");
-    const searchInput = document.getElementById("discoverSearchInput");
+    const gridContainer     = document.getElementById("discoverGridContainer");
+    const searchInput       = document.getElementById("discoverSearchInput");
     const resultsCountLabel = document.getElementById("resultsCountLabel");
+    let debounceTimer;
+
+    // ── HELPERS ───────────────────────────────────────────────────────────────
+    /**
+     * Normalise a Google Books ID so edition variants, extra query params,
+     * and trailing junk don't cause false-negative shelf lookups.
+     */
+    function cleanGoogleId(rawId) {
+        if (!rawId) return '';
+        return rawId.split('?')[0].split('&')[0].trim();
+    }
 
     /**
-     * Renders filtered list into the DOM with custom staggered loading timelines
-     * @param {Array} booksListTarget List of books matching rendering parameters
+     * Return the shelf status for a book already on the user's shelf,
+     * or null if the book isn't shelved.
+     * Tries googleBooksId first, falls back to title+author.
      */
-    function renderDiscoverCollectionGrid(booksListTarget) {
-        // Clear old mounted inner blocks
+    function getExistingStatus(book) {
+        const id = cleanGoogleId(book.googleBooksId);
+        if (id && window.existingShelfBooks?.has(id)) {
+            return window.existingShelfBooks.get(id);
+        }
+        const titleKey = `${book.title}__${book.author}`.toLowerCase();
+        return window.existingShelfBooksByTitle?.get(titleKey) || null;
+    }
+
+    // ── RENDER GRID ───────────────────────────────────────────────────────────
+    function renderDiscoverCollectionGrid(books) {
         gridContainer.innerHTML = "";
 
-        if (booksListTarget.length === 0) {
+        if (books.length === 0) {
             gridContainer.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 48px; color: var(--text-muted); font-weight: 500;">
-                     ✨ No matching titles or authors found. Try another query.
-                </div>
-            `;
+                <div style="grid-column: 1 / -1; text-align: center; padding: 48px; 
+                            color: var(--text-muted); font-weight: 500;">
+                    ✨ No matching titles found. Try another query.
+                </div>`;
             resultsCountLabel.innerText = "Search Results (0)";
             return;
         }
 
-        // Dynamically append collection cards
-        booksListTarget.forEach((book, loopIndex) => {
+        books.forEach((book, index) => {
             const cardItem = document.createElement("article");
-            cardItem.className = "book-card";
-            
-            // Programmatically establish stagged entrance increments
-            cardItem.style.animationDelay = `${loopIndex * 0.06}s`;
-            cardItem.classList.add("card-entrance-animation");
+            cardItem.className = "book-card card-entrance-animation";
+            cardItem.style.animationDelay = `${index * 0.06}s`;
+
+            const coverHTML = book.thumbnail
+                ? `<img src="${book.thumbnail}" alt="${book.title}" 
+                        style="width:100%; height:100%; object-fit:cover; border-radius:8px;"
+                        onerror="this.parentElement.style.backgroundColor='${coverColorPalette[index % coverColorPalette.length]}'; this.remove();">`
+                : `<span class="cover-title-fallback">${book.title}</span>`;
+
+            const coverBg = book.thumbnail
+                ? 'transparent'
+                : coverColorPalette[index % coverColorPalette.length];
+
+            const cleanBookId = cleanGoogleId(book.googleBooksId);
+
+            // ── FIX: use getExistingStatus() instead of duplicated inline logic ──
+            const existingStatus = getExistingStatus(book);
+            console.log('Book:', book.googleBooksId, '→ cleanId:', cleanBookId, '→ status:', existingStatus);
+
+            // ── FIX: btnLabel / btnBg are now actually injected into the HTML ──
+            const btnLabel = existingStatus
+                ? `✓ On ${existingStatus} shelf`
+                : '➕ Add to Shelf';
+            const btnBg = existingStatus
+                ? 'background-color: #9B8E82;'
+                : '';
 
             cardItem.innerHTML = `
-                <div class="cover-display-frame" style="background-color: ${book.bgColor};">
-                    <span class="cover-title-fallback">${book.title}</span>
+                <div class="cover-display-frame" style="background-color: ${coverBg};">
+                    ${coverHTML}
                 </div>
                 <div class="card-details-info">
                     <h4 class="book-title-lbl">${book.title}</h4>
                     <span class="book-author-lbl">by ${book.author}</span>
-                    <p class="book-desc-snippet">${book.description}</p>
+                    <p class="book-desc-snippet">${book.description.substring(0, 120)}...</p>
                 </div>
                 <div class="card-action-bar">
                     <div class="shelf-dropdown-wrapper">
-                        <button class="btn-add-shelf" data-target-id="${book.id}">
-                            ➕ Add to Shelf
+                        <button class="btn-add-shelf"
+                                style="${btnBg}"
+                                data-book-id="${book.id}"
+                                data-title="${book.title}"
+                                data-author="${book.author}"
+                                data-description="${book.description.substring(0, 200)}"
+                                data-thumbnail="${book.thumbnail || ''}"
+                                data-google-id="${cleanBookId}"
+                                data-total-pages="${book.totalPages || 0}">
+                            ${btnLabel}
                         </button>
                         <div class="shelf-popover-menu" id="popover-${book.id}">
-                            <button class="menu-action-option" data-status="Want to Read">Want to Read</button>
-                            <button class="menu-action-option" data-status="Currently Reading">Currently Reading</button>
-                            <button class="menu-action-option" data-status="Completed">Completed</button>
+                            <button class="menu-action-option" 
+                                    data-status="want-to-read">Want to Read</button>
+                            <button class="menu-action-option" 
+                                    data-status="reading">Currently Reading</button>
+                            <button class="menu-action-option" 
+                                    data-status="completed">Completed</button>
                         </div>
                     </div>
                     <a href="#" class="action-view-link">View Details →</a>
@@ -120,81 +114,196 @@ document.addEventListener("DOMContentLoaded", () => {
             gridContainer.appendChild(cardItem);
         });
 
-        // Update total dynamic indicators
-        if (searchInput.value.trim() !== "") {
-            resultsCountLabel.innerText = `Search Results (${booksListTarget.length})`;
-        } else {
-            resultsCountLabel.innerText = "Explore Collection";
-        }
+        resultsCountLabel.innerText = searchInput.value.trim() !== ""
+            ? `Search Results (${books.length})`
+            : `Explore Collection (${books.length})`;
 
         initializeDropdownControllers();
     }
 
-    /**
-     * Attaches structural events to dynamic popup drawers safely
-     */
+    // ── DROPDOWN CONTROLLERS ──────────────────────────────────────────────────
     function initializeDropdownControllers() {
-        const shelfActionButtons = document.querySelectorAll(".btn-add-shelf");
-
-        shelfActionButtons.forEach(btn => {
-            btn.addEventListener("click", (event) => {
-                event.stopPropagation();
-                const targetId = btn.getAttribute("data-target-id");
-                const currentPopover = document.getElementById(`popover-${targetId}`);
-
-                // Close all other instances
+        document.querySelectorAll(".btn-add-shelf").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const targetId = btn.getAttribute("data-book-id");
+                const popover  = document.getElementById(`popover-${targetId}`);
                 document.querySelectorAll(".shelf-popover-menu").forEach(menu => {
-                    if (menu !== currentPopover) menu.classList.remove("open");
+                    if (menu !== popover) menu.classList.remove("open");
                 });
-
-                // Toggle target active overlay layer drawer
-                currentPopover.classList.toggle("open");
+                popover.classList.toggle("open");
             });
         });
 
-        // Mount internal nested operational option links handler logic rules
-        const menuOptions = document.querySelectorAll(".menu-action-option");
-        menuOptions.forEach(option => {
-            option.addEventListener("click", (e) => {
+        document.querySelectorAll(".menu-action-option").forEach(option => {
+            option.addEventListener("click", async (e) => {
                 e.stopPropagation();
-                const selectedStatus = option.getAttribute("data-status");
-                const assignedParentMenu = option.closest(".shelf-popover-menu");
-                const associatedTriggerBtn = assignedParentMenu.previousElementSibling;
 
-                // Provide a visually responsive tactile success modifier indicator 
-                associatedTriggerBtn.innerHTML = `✓ ${selectedStatus}`;
-                associatedTriggerBtn.style.backgroundColor = "var(--sage-green)";
-                
-                // Retain tracking updates confirmation alert logs 
-                console.log(`Folio Event Tracker: Book ID mapped to shelf action structural updates state: [${selectedStatus}]`);
-                
-                // Auto dismiss selection tray
-                assignedParentMenu.classList.remove("open");
+                const selectedStatus = option.getAttribute("data-status");
+                const parentMenu     = option.closest(".shelf-popover-menu");
+                const triggerBtn     = parentMenu.previousElementSibling;
+
+                const bookData = {
+                    title:         triggerBtn.getAttribute("data-title"),
+                    author:        triggerBtn.getAttribute("data-author"),
+                    description:   triggerBtn.getAttribute("data-description"),
+                    googleBooksId: triggerBtn.getAttribute("data-google-id") || '',
+                    totalPages:    parseInt(triggerBtn.getAttribute("data-total-pages")) || 0,
+                    thumbnail:     triggerBtn.getAttribute("data-thumbnail") || '',
+                    status:        selectedStatus,
+                    coverColor:    coverColorPalette[Math.floor(Math.random() * coverColorPalette.length)]
+                };
+
+                try {
+                    const response = await apiFetch('/shelves', {
+                        method: 'POST',
+                        body:   JSON.stringify(bookData)
+                    });
+
+                    if (!response) return;
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        if (response.status === 409 && data.bookId) {
+                            // Book already exists — move it to new shelf
+                            const moveResponse = await apiFetch(`/shelves/${data.bookId}`, {
+                                method: 'PUT',
+                                body:   JSON.stringify({ status: selectedStatus })
+                            });
+
+                            if (moveResponse && moveResponse.ok) {
+                                triggerBtn.textContent = `✓ On ${selectedStatus} shelf`;
+                                triggerBtn.style.backgroundColor = "#9B8E82";
+                                // Keep the in-memory map in sync
+                                const gid = triggerBtn.getAttribute("data-google-id");
+                                if (gid) window.existingShelfBooks?.set(gid, selectedStatus);
+                                const titleKey = `${triggerBtn.getAttribute("data-title")}__${triggerBtn.getAttribute("data-author")}`.toLowerCase();
+                                window.existingShelfBooksByTitle?.set(titleKey, selectedStatus);
+                            }
+                        } else {
+                            alert(data.message || 'Could not add book to shelf.');
+                        }
+                        parentMenu.classList.remove("open");
+                        return;
+                    }
+
+                    triggerBtn.textContent = `✓ On ${selectedStatus} shelf`;
+                    triggerBtn.style.backgroundColor = "#9B8E82";
+                    parentMenu.classList.remove("open");
+
+                    // Keep the in-memory maps in sync so searching again shows correct state
+                    const gid = triggerBtn.getAttribute("data-google-id");
+                    if (gid) window.existingShelfBooks?.set(gid, selectedStatus);
+                    const titleKey = `${triggerBtn.getAttribute("data-title")}__${triggerBtn.getAttribute("data-author")}`.toLowerCase();
+                    window.existingShelfBooksByTitle?.set(titleKey, selectedStatus);
+
+                } catch (error) {
+                    console.error('Folio shelf error:', error);
+                    alert('Could not connect to Folio server.');
+                }
             });
+        });
+
+        document.addEventListener("click", () => {
+            document.querySelectorAll(".shelf-popover-menu")
+                    .forEach(m => m.classList.remove("open"));
         });
     }
 
-    // Dismiss active operational menus globally if a background viewport canvas is clicked
-    document.addEventListener("click", () => {
-        document.querySelectorAll(".shelf-popover-menu").forEach(menu => menu.classList.remove("open"));
-    });
-
-    /**
-     * Active real-time input filter monitoring event layout configuration pipeline
-     */
+    // ── SEARCH ────────────────────────────────────────────────────────────────
     searchInput.addEventListener("input", (e) => {
-        const structuralQuery = e.target.value.toLowerCase().trim();
-
-        const filteredCollectionMatches = discoverRepositoryDataset.filter(bookItem => {
-            return bookItem.title.toLowerCase().includes(structuralQuery) || 
-                   bookItem.author.toLowerCase().includes(structuralQuery) ||
-                   bookItem.description.toLowerCase().includes(structuralQuery);
-        });
-
-        // Process rendering layout mutations instantly
-        renderDiscoverCollectionGrid(filteredCollectionMatches);
+        clearTimeout(debounceTimer);
+        const query = e.target.value.trim();
+        if (!query) { loadFeaturedBooks(); return; }
+        debounceTimer = setTimeout(() => searchBooks(query), 400);
     });
 
-    // Fire default pristine initialization view on standard document loads
-    renderDiscoverCollectionGrid(discoverRepositoryDataset);
+    async function searchBooks(query) {
+        try {
+            gridContainer.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; 
+                            padding: 48px; color: var(--text-muted);">
+                    🔍 Searching...
+                </div>`;
+
+            const response = await apiFetch(
+                `/books/search?q=${encodeURIComponent(query)}`
+            );
+            if (!response) return;
+
+            const data = await response.json();
+            renderDiscoverCollectionGrid(data.books || []);
+
+        } catch (error) {
+            console.error('Search error:', error);
+            gridContainer.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; 
+                            padding: 48px; color: var(--text-muted);">
+                    ⚠️ Could not connect to server.
+                </div>`;
+        }
+    }
+
+    // ── MARK EXISTING SHELF BOOKS ─────────────────────────────────────────────
+    async function markExistingShelfBooks() {
+        try {
+            const response = await apiFetch('/shelves');
+            if (!response) return;
+
+            const data = await response.json();
+            if (!data.success) return;
+
+            const allBooks = [
+                ...data.shelves['want-to-read'],
+                ...data.shelves['reading'],
+                ...data.shelves['completed']
+            ];
+
+            window.existingShelfBooks = new Map(
+                allBooks
+                    .filter(b => b.googleBooksId)
+                    .map(b => [cleanGoogleId(b.googleBooksId), b.status])
+            );
+
+            window.existingShelfBooksByTitle = new Map(
+                allBooks.map(b => [
+                    `${b.title}__${b.author}`.toLowerCase(),
+                    b.status
+                ])
+            );
+
+            console.log('Shelf map built:', [...window.existingShelfBooks.entries()]);
+
+        } catch (error) {
+            console.error('Mark existing books error:', error);
+        }
+    }
+
+    // ── LOAD FEATURED ─────────────────────────────────────────────────────────
+    async function loadFeaturedBooks() {
+        try {
+            gridContainer.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; 
+                            padding: 48px; color: var(--text-muted);">
+                    📚 Loading books...
+                </div>`;
+
+            const response = await apiFetch('/books/featured');
+            if (!response) return;
+
+            const data = await response.json();
+            renderDiscoverCollectionGrid(data.books || []);
+
+        } catch (error) {
+            console.error('Featured books error:', error);
+        }
+    }
+
+    // ── INITIAL LOAD ──────────────────────────────────────────────────────────
+    markExistingShelfBooks().then(() => {
+        loadFeaturedBooks();
+    });
+     loadSidebarStreak();
+
 });

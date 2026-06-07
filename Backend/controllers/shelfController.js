@@ -26,21 +26,36 @@ const getShelves = async (req, res) => {
 // @desc    Add a new book to a shelf
 // @access  Private
 const addBook = async (req, res) => {
-    const { title, author, description, coverColor, status, googleBooksId } = req.body;
+    const { title, author, description, coverColor, status, googleBooksId, totalPages, thumbnail } = req.body;
 
     if (!title || !author) {
         return res.status(400).json({ message: 'Title and author are required' });
     }
 
     try {
+        // ── DUPLICATE CHECK ───────────────────────────────────────────────────
+       const existingBook = googleBooksId 
+    ? await Book.findOne({ user: req.user.id, googleBooksId: googleBooksId })
+    : await Book.findOne({ user: req.user.id, title: title, author: author });
+
+        if (existingBook) {
+            return res.status(409).json({
+                message: `This book is already on your ${existingBook.status} shelf`,
+                existingStatus: existingBook.status,
+                bookId: existingBook._id
+            });
+        }
+
         const newBook = await Book.create({
             user:         req.user.id,
             title,
             author,
             description:  description  || '',
             coverColor:   coverColor   || '#607E65',
+            thumbnail:     thumbnail     || '', 
             status:       status       || 'want-to-read',
             googleBooksId: googleBooksId || '',
+            totalPages:    totalPages    || 0,
             progress:     status === 'completed' ? 100 : 0,
             rating:       0
         });
@@ -58,40 +73,64 @@ const addBook = async (req, res) => {
 // @access  Private
 const updateBook = async (req, res) => {
     try {
-        // Find the book and make sure it belongs to this user
         const book = await Book.findOne({ _id: req.params.id, user: req.user.id });
 
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
 
-        const { status, progress, rating } = req.body;
+        const { status, progress, rating, totalPages, currentPage, finished } = req.body;
 
-        // Only update fields that were actually sent
-        if (status  !== undefined) book.status   = status;
-        if (progress !== undefined) book.progress = progress;
-        if (rating  !== undefined) book.rating   = rating;
+        if (status     !== undefined) book.status     = status;
+        if (rating     !== undefined) book.rating     = rating;
+        if (totalPages !== undefined) book.totalPages = totalPages;
 
-        // Mirror your frontend logic: moving to completed = 100%
-        if (status === 'completed') {
+        // ── FINISHED BUTTON ───────────────────────────────────────────────────
+        if (finished === true) {
+            book.status   = 'completed';
             book.progress = 100;
-            if (!rating) book.rating = book.rating || 5;
+            if (!book.rating) book.rating = 0;
+            const updatedBook = await book.save();
+            return res.status(200).json({ 
+                success: true, 
+                book: updatedBook,
+                autoCompleted: true 
+            });
         }
 
-        // Moving back to want-to-read resets progress
+        // ── PAGE NUMBER PROGRESS ──────────────────────────────────────────────
+        if (currentPage !== undefined && book.totalPages > 0) {
+            book.progress = Math.min(100, Math.round((currentPage / book.totalPages) * 100));
+        } else if (progress !== undefined) {
+            book.progress = progress;
+        }
+
+        // ── AUTO COMPLETE AT 100% ─────────────────────────────────────────────
+        if (book.progress >= 100) {
+            book.progress = 100;
+            book.status   = 'completed';
+        }
+
+        if (status === 'completed') {
+            book.progress = 100;
+        }
+
         if (status === 'want-to-read') {
             book.progress = 0;
         }
 
         const updatedBook = await book.save();
-        res.status(200).json({ success: true, book: updatedBook });
+        res.status(200).json({ 
+            success: true, 
+            book: updatedBook,
+            autoCompleted: book.progress === 100 
+        });
 
     } catch (error) {
         console.error('updateBook error:', error.message);
         res.status(500).json({ message: 'Server error updating book' });
     }
 };
-
 // ─── @route   DELETE /api/shelves/:id ─────────────────────────────────────────
 // @desc    Remove a book from shelves entirely
 // @access  Private

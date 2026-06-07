@@ -1,23 +1,21 @@
-const jwt = require('jsonwebtoken');
+const jwt  = require('jsonwebtoken');
 const User = require('../models/User');
 
-// ─── PROTECT MIDDLEWARE ───────────────────────────────────────────────────────
-// Attach this to any route that requires the user to be logged in.
-// It reads the JWT from the httpOnly cookie, verifies it,
-// and attaches the decoded user to req.user for the next handler.
-
 const protect = async (req, res, next) => {
-    const token = req.cookies.folio_token;
+    let token;
+
+    // Read from Authorization header: "Bearer <token>"
+    if (req.headers.authorization && 
+        req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1];
+    }
 
     if (!token) {
         return res.status(401).json({ message: 'Not authorised — please log in' });
     }
 
     try {
-        // Verify token signature and expiry
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        // Attach user to request (excluding password)
         req.user = await User.findById(decoded.id).select('-password');
 
         if (!req.user) {

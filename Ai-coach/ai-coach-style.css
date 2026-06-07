@@ -382,3 +382,22 @@ body {
     from { opacity: 0; transform: translateY(-12px); }
     to { opacity: 1; transform: translateY(0); }
 }
+.logout-btn {
+    width: 100%;
+    padding: 10px 16px;
+    background: none;
+    border: 1.5px solid #3a3228;
+    border-radius: 12px;
+    color: #9B8E82;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 12px;
+    text-align: left;
+}
+.logout-btn:hover {
+    background: #3a3228;
+    color: #FAF7F2;
+}

@@ -34,13 +34,18 @@
                 </a>
             </nav>
 
+            
             <div class="user-profile-widget" id="userProfileNode">
                 <div class="avatar-circle">S</div>
                 <div class="user-meta">
                     <h4 class="username-label" id="profileName">Sharvari</h4>
-                    <p class="streak-sub">7 day streak 🔥</p>
+                     <p class="streak-sub" id="sidebarStreak">0 day streak 🔥</p>
                 </div>
             </div>
+
+            <button class="logout-btn" onclick="handleLogout()">
+             <span>↩</span> Log Out
+             </button>
         </aside>
 
         <main class="main-content">
@@ -67,53 +72,110 @@
                 
                 <div class="card card-large card-animate">
                     <span class="section-tag">Currently Reading</span>
-                    <div class="currently-reading-box">
-                        <div class="book-cover-wrapper">
-                            <div class="book-cover-mock">
-                                <span class="cover-title">The Midnight Library</span>
-                                <span class="cover-author">Matt Haig</span>
-                            </div>
-                        </div>
-                        <div class="book-progress-details">
-                            <h3>The Midnight Library</h3>
-                            <p class="author-sub">by Matt Haig</p>
-                            
-                            <div class="progress-container-metric">
-                                <span class="progress-label">Page 184 of 304</span>
-                                <span class="progress-percentage">61%</span>
-                            </div>
-                            <div class="progress-bar-track">
-                                <div class="progress-bar-fill" style="width: 61%;"></div>
-                            </div>
-                            
-                            <div class="button-row">
-                                <button class="btn-secondary">Update Progress</button>
-                                <button class="btn-text-action" onclick="window.location.href='../book-details/book-details.html'">View Details →</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <div class="currently-reading-box" id="currentlyReadingBox">
+    <div class="book-cover-wrapper">
+        <div class="book-cover-mock" id="currentBookCover">
+            <span class="cover-title" id="currentBookTitle">—</span>
+            <span class="cover-author" id="currentBookAuthor"></span>
+        </div>
+    </div>
+    <div class="book-progress-details">
+        <h3 id="currentBookTitleLarge">No book in progress</h3>
+        <p class="author-sub" id="currentBookAuthorLarge">Add a book to Currently Reading</p>
+        
+        <div class="progress-container-metric">
+            <span class="progress-label" id="currentBookPageLabel">—</span>
+            <span class="progress-percentage" id="currentBookPercent">0%</span>
+        </div>
+        <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="currentBookProgressBar" style="width: 0%;"></div>
+        </div>
+        
+        <div class="button-row">
+            <button class="btn-secondary" onclick="window.location.href='../Shelves/shelves.html'">
+                Update Progress
+            </button>
+            <button class="btn-text-action" onclick="window.location.href='../Shelves/shelves.html'">
+                View Shelves →
+            </button>
+           </div>
+         </div>
+      </div>
 
+
+      <!-- ── READING GOAL ───────────────────────────────────────── -->
+<div class="reading-goal-section" id="readingGoalSection">
+    <div class="quote-divider"></div>
+
+    <!-- Goal not set yet -->
+    <div class="goal-setup" id="goalSetup">
+        <p class="goal-prompt">📚 Set your reading goal for 2026</p>
+        <p class="goal-subtext">How many books do you want to read this year?</p>
+        <div class="goal-input-row">
+            <input type="number" id="goalInput" 
+                   placeholder="e.g. 24" min="1" max="365">
+            <button class="goal-save-btn" id="goalSaveBtn">Set Goal →</button>
+        </div>
+    </div>
+
+    <!-- Goal set — show progress -->
+    <div class="goal-progress" id="goalProgress" style="display:none;">
+        <div class="goal-header-row">
+            <div>
+                <p class="goal-title">📚 Reading Goal 2026</p>
+                <p class="goal-subtext" id="goalMotivation">Keep going!</p>
+            </div>
+            <button class="goal-edit-btn" id="goalEditBtn">✎ Edit</button>
+        </div>
+        <div class="goal-bar-track">
+            <div class="goal-bar-fill" id="goalBarFill"></div>
+        </div>
+        <div class="goal-footer-row">
+            <span class="goal-count" id="goalCount">0 of 12 books</span>
+            <span class="goal-percent" id="goalPercent">0%</span>
+        </div>
+        <!-- Edit mode — hidden by default -->
+        <div class="goal-edit-row" id="goalEditRow" style="display:none;">
+            <input type="number" id="goalUpdateInput" 
+                   placeholder="New goal" min="1" max="365">
+            <button class="goal-save-btn" id="goalUpdateBtn">Update →</button>
+            <button class="goal-cancel-btn" id="goalCancelBtn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+         <!-- ── DAILY QUOTE ─────────────────────────────────────────── -->
+<div class="daily-quote-section" id="dailyQuoteSection">
+    <div class="quote-divider"></div>
+    <div class="quote-content">
+        <span class="quote-icon">❝</span>
+        <p class="quote-text" id="dailyQuoteText">Loading your daily spark...</p>
+        <span class="quote-author" id="dailyQuoteAuthor">— Folio</span>
+    </div>
+</div>
+
+
+                </div>
                 <div class="card card-medium card-animate">
                     <span class="section-tag">Reading Stats</span>
                     <div class="stats-box-grid">
-                        <div class="stat-pill">
-                            <span class="stat-num">24</span>
-                            <span class="stat-lbl">Books Read</span>
-                        </div>
-                        <div class="stat-pill">
-                            <span class="stat-num">7</span>
-                            <span class="stat-lbl">Day Streak</span>
-                        </div>
-                        <div class="stat-pill">
-                            <span class="stat-num">3</span>
-                            <span class="stat-lbl">This Month</span>
-                        </div>
-                        <div class="stat-pill">
-                            <span class="stat-num">4.2 ★</span>
-                            <span class="stat-lbl">Avg Rating</span>
-                        </div>
-                    </div>
+    <div class="stat-pill">
+        <span class="stat-num" id="totalBooksCount">0</span>
+        <span class="stat-lbl">Books Read</span>
+    </div>
+    <div class="stat-pill">
+        <span class="stat-num" id="streakCount">0</span>
+        <span class="stat-lbl">Day Streak</span>
+    </div>
+    <div class="stat-pill">
+        <span class="stat-num" id="currentlyReadingCount">0</span>
+        <span class="stat-lbl">This Month</span>
+    </div>
+    <div class="stat-pill">
+        <span class="stat-num" id="averageRating">0 ★</span>
+        <span class="stat-lbl">Avg Rating</span>
+    </div>
+</div>
                     
                     <div class="mini-chart-container">
                         <p class="chart-title">Books Per Month (2026)</p>
@@ -128,18 +190,27 @@
                     </div>
                </div>
 
-                <div class="card card-small card-animate" onclick="window.location.href='../shelves/shelves.html'">
-                    <span class="section-tag">My Shelves</span>
-                    <div class="shelf-preview-tile">
-                        <div class="folder-icon-mock">📂</div>
-                        <div>
-                            <h4>Want to Read</h4>
-                            <p class="counter-sub">14 books cataloged</p>
-                        </div>
-                        <span class="arrow-indicator">➔</span>
-                    </div>
-                </div>
-
+                     <div class="card card-small card-animate" onclick="window.location.href='../Shelves/shelves.html'">
+    <span class="section-tag">My Shelves</span>
+    <div class="shelf-preview-tile">
+        <div class="folder-icon-mock">📂</div>
+        <div>
+            <h4>Want to Read</h4>
+            <p class="counter-sub" id="wantToReadCount">0 books</p>
+        </div>
+        <span class="arrow-indicator">➔</span>
+    </div>
+    <div class="shelf-mini-stats">
+        <div class="shelf-mini-pill">
+            <span id="homeReadingCount">0</span>
+            <span>Reading</span>
+        </div>
+        <div class="shelf-mini-pill">
+            <span id="homeCompletedCount">0</span>
+            <span>Done</span>
+        </div>
+    </div>
+</div>
                 <div class="card card-banner card-animate" onclick="window.location.href='../ai-coach/ai-coach.html'">
                     <div class="banner-content">
                         <span class="ai-pill-tag">AI Book Coach</span>
@@ -152,7 +223,7 @@
             </section>
         </main>
     </div>
-
+    <script src="../js/api.js"></script>
     <script src="home_script.js"></script>
 </body>
 </html>

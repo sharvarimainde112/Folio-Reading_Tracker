@@ -1,17 +1,12 @@
 const API_BASE = 'http://localhost:5000/api';
 
-// ─── CARD FLIP ────────────────────────────────────────────────────────────────
 function toggleCard() {
     document.getElementById('authCard').classList.toggle('flipped');
 }
 
-// ─── MAIN AUTH HANDLER ────────────────────────────────────────────────────────
-// Called by both forms via onsubmit="handleAuth(event)"
-// Detects which form submitted and routes accordingly
 async function handleAuth(event) {
     event.preventDefault();
-
-    const submittedFormId = event.target.id; // "loginForm" or "signupForm"
+    const submittedFormId = event.target.id;
 
     if (submittedFormId === 'signupForm') {
         await handleSignup();
@@ -20,7 +15,6 @@ async function handleAuth(event) {
     }
 }
 
-// ─── SIGNUP ───────────────────────────────────────────────────────────────────
 async function handleSignup() {
     const name     = document.getElementById('signupName').value.trim();
     const email    = document.getElementById('signupEmail').value.trim();
@@ -33,10 +27,9 @@ async function handleSignup() {
 
     try {
         const response = await fetch(`${API_BASE}/auth/signup`, {
-            method: 'POST',
+            method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'include', // Required to receive + store httpOnly cookie
-            body: JSON.stringify({ name, email, password })
+            body:    JSON.stringify({ name, email, password })
         });
 
         const data = await response.json();
@@ -46,8 +39,10 @@ async function handleSignup() {
             return;
         }
 
-        // Store name for greeting display across pages
-        localStorage.setItem('folio_user', data.user.name);
+        // Store token and user info
+        localStorage.setItem('folio_token',  data.token);
+        localStorage.setItem('folio_user',   data.user.name);
+        localStorage.setItem('folio_userId', data.user.id);
 
         showSuccessAndRedirect();
 
@@ -57,7 +52,6 @@ async function handleSignup() {
     }
 }
 
-// ─── LOGIN ────────────────────────────────────────────────────────────────────
 async function handleLogin() {
     const email    = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value.trim();
@@ -69,10 +63,9 @@ async function handleLogin() {
 
     try {
         const response = await fetch(`${API_BASE}/auth/login`, {
-            method: 'POST',
+            method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'include', // Required to send + receive httpOnly cookie
-            body: JSON.stringify({ email, password })
+            body:    JSON.stringify({ email, password })
         });
 
         const data = await response.json();
@@ -82,8 +75,10 @@ async function handleLogin() {
             return;
         }
 
-        // Store name for greeting display across pages
-        localStorage.setItem('folio_user', data.user.name);
+        // Store token and user info
+        localStorage.setItem('folio_token',  data.token);
+        localStorage.setItem('folio_user',   data.user.name);
+        localStorage.setItem('folio_userId', data.user.id);
 
         showSuccessAndRedirect();
 
@@ -93,7 +88,6 @@ async function handleLogin() {
     }
 }
 
-// ─── SHARED SUCCESS HANDLER ───────────────────────────────────────────────────
 function showSuccessAndRedirect() {
     document.getElementById('successOverlay').classList.add('active');
     setTimeout(() => {
