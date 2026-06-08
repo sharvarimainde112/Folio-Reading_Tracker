@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://folio-reading-tracker.onrender.com/api';
 
 /**
  * Authenticated fetch — automatically adds JWT token to every request
