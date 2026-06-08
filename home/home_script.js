@@ -126,6 +126,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (greetingEl) greetingEl.innerText = `Good ${getTimeOfDay()}, ${activeUser}! ✨`;
     if (profileEl)  profileEl.innerText  = activeUser;
 
+    updateSidebarUserInfo();
+
     // ── LOAD STATS ────────────────────────────────────────────────────────────
     // initializeReadingGoal is called INSIDE loadDashboardStats
     await loadDashboardStats();
@@ -135,11 +137,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ── DAILY QUOTE ───────────────────────────────────────────────────────────
     loadDailyQuote();
-
-   // In loadDashboardStats(), replace the deleted lines with:
-loadSidebarStreak(); // reuse the shared function, or just skip since data is already here:
-const streakEl = document.getElementById('sidebarStreak');
-if (streakEl) streakEl.innerText = `${stats.streak} day streak 🔥`;
 });
 
 // ─── TIME OF DAY ──────────────────────────────────────────────────────────────
@@ -191,9 +188,12 @@ async function loadDashboardStats() {
         // ── READING GOAL ──────────────────────────────────────────────────────
         initializeReadingGoal(stats.completed);
 
+       
+
     } catch (error) {
         console.error('Folio dashboard error:', error);
     }
+    
 }
 
 // ─── LOAD CURRENTLY READING ───────────────────────────────────────────────────

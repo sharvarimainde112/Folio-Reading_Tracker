@@ -46,11 +46,27 @@ async function handleLogout() {
     }
 }
 
-// ─── SIDEBAR STREAK (runs on every page) ─────────────────────────────────────
-async function loadSidebarStreak() {
+async function updateSidebarUserInfo() {
+    // Update name from localStorage
+    const rawName    = localStorage.getItem('folio_user') || 'Reader';
+    const activeUser = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+
+    const profileEl = document.getElementById('profileName');
+    const avatarEl  = document.querySelector('.avatar-circle');
+
+    if (profileEl) profileEl.innerText = activeUser;
+    if (avatarEl)  avatarEl.innerText  = activeUser.charAt(0).toUpperCase();
+
+    // Update streak from backend — silently, no redirect on failure
     try {
-        const response = await apiFetch('/stats');
-        if (!response) return;
+        const token = localStorage.getItem('folio_token');
+        if (!token) return; // ← don't redirect, just skip
+
+        const response = await fetch('http://localhost:5000/api/stats', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) return; // ← don't redirect, just skip
 
         const data = await response.json();
         if (!data.success) return;
@@ -58,12 +74,7 @@ async function loadSidebarStreak() {
         const streakEl = document.getElementById('sidebarStreak');
         if (streakEl) streakEl.innerText = `${data.stats.streak} day streak 🔥`;
 
-        const mottoEl = document.querySelector('.motto');
-        if (mottoEl) {
-            mottoEl.innerHTML = `You've read <strong class="highlight">${data.stats.completed} books</strong> total. Keep going!`;
-        }
-
     } catch (error) {
-        console.error('Sidebar streak error:', error);
+        console.error('Sidebar update error:', error);
     }
 }

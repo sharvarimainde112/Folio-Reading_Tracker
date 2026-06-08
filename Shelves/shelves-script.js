@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
+    updateSidebarUserInfo();
     executeStaggeredColumnEntranceAnimation();
     await loadAndRenderShelves();
-     loadSidebarStreak();
+     
 });
 
 function executeStaggeredColumnEntranceAnimation() {
@@ -56,18 +57,11 @@ function renderLibraryShelvesBoard(shelves) {
                if (status === "reading") {
     operationalMetricMarkup = `
         <div class="metric-row-container">
-            <div class="progress-header-row">
-                <span class="progress-label">${book.progress}% read</span>
-                <button class="btn-update-progress" 
-                        data-book-id="${book._id}"
-                        data-book-title="${book.title}"
-                        data-current-progress="${book.progress}"
-                        data-total-pages="${book.totalPages || 0}">Update</button>
-            </div>
             <div class="compact-progress-track">
                 <div class="compact-progress-fill" 
                      style="width: ${book.progress}%;"></div>
             </div>
+            <span class="progress-label">${book.progress}% read</span>
         </div>
     `;
 }
@@ -101,9 +95,17 @@ function renderLibraryShelvesBoard(shelves) {
         </div>
         ${operationalMetricMarkup}
     </div>
+
     <div class="shelf-shift-container">
-        <button class="btn-shift-trigger" 
-                aria-label="Move book to shelf">⋮</button>
+    ${status === 'reading' ? `
+        <button class="btn-update-progress"
+                data-book-id="${book._id}"
+                data-book-title="${book.title}"
+                data-current-progress="${book.progress}"
+                data-total-pages="${book.totalPages || 0}">Update</button>
+    ` : ''}
+    <button class="btn-shift-trigger" 
+            aria-label="Move book to shelf">⋮</button>
         <div class="shift-dropdown-menu">
             ${status !== 'want-to-read' ?
                 `<button class="dropdown-opt" 
@@ -404,5 +406,3 @@ document.querySelectorAll('.star-input').forEach(star => {
     });
 });
 
-const streakEl = document.getElementById('sidebarStreak');
-        if (streakEl) streakEl.innerText = `${stats.streak} day streak 🔥`;

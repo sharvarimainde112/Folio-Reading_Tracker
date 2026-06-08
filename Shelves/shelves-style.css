@@ -152,11 +152,13 @@ body {
 .main-content {
     margin-left: 280px;
     flex-grow: 1;
-    padding: 48px 48px;
-    max-width: 1400px;
+    padding: 48px 24px;
     width: calc(100% - 280px);
+    max-width: calc(100vw - 280px);
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .shelves-header {
@@ -176,12 +178,14 @@ body {
 }
 
 /* --- THE TRI-SHELF BOARD VISUAL CONTAINER --- */
-.board-container {
+ .board-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
     align-items: start;
     flex-grow: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Vertical Kanban Base Layout Component Columns */
@@ -238,7 +242,7 @@ body {
 .shelf-book-card {
     background-color: var(--bg-cream);
     border-radius: var(--radius-md);
-    padding: 16px;
+    padding: 16px 16px 44px 16px;
     border: 1px solid rgba(44, 38, 34, 0.03);
     display: flex;
     gap: 16px;
@@ -344,6 +348,9 @@ body {
     position: absolute;
     bottom: 12px;
     right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .btn-shift-trigger {
@@ -512,12 +519,16 @@ body {
     display: flex;
     align-items: flex-end;
     gap: 12px;
+    width: 100%;
+    overflow: hidden;
 }
 .modal-input-group {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    flex: 1;
+    min-width: 0;
 }
 .modal-input-group label {
     font-size: 0.78rem;
@@ -536,6 +547,8 @@ body {
     color: #2C2416;
     outline: none;
     transition: border-color 0.2s;
+    width: 100%;  /* fill the group, don't exceed it */
+    box-sizing: border-box;
 }
 .modal-input-group input:focus {
     border-color: #607E65;
@@ -545,6 +558,7 @@ body {
     color: #9B8E82;
     padding-bottom: 14px;
     font-weight: 500;
+    flex-shrink: 0;
 }
 
 /* ── MODAL FOOTER ──────────────────────────────────────────────── */
@@ -633,6 +647,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 6px;
+    padding-right: 36px;
 }
 
 .modal-finish-btn {

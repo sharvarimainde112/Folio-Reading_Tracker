@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+     updateSidebarUserInfo();
     const threadScrollBox   = document.getElementById("chatScrollThread");
     const communicationForm = document.getElementById("coachMessageForm");
     const userTextField     = document.getElementById("chatComposerInput");

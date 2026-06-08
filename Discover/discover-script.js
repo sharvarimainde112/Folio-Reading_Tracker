@@ -4,6 +4,7 @@ const coverColorPalette = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
+     updateSidebarUserInfo();
     const gridContainer     = document.getElementById("discoverGridContainer");
     const searchInput       = document.getElementById("discoverSearchInput");
     const resultsCountLabel = document.getElementById("resultsCountLabel");
@@ -304,6 +305,5 @@ document.addEventListener("DOMContentLoaded", () => {
     markExistingShelfBooks().then(() => {
         loadFeaturedBooks();
     });
-     loadSidebarStreak();
 
 });
