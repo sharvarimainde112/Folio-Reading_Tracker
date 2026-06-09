@@ -24,7 +24,7 @@ function formatBook(item) {
         title:         info.title       || 'Unknown Title',
         author:        info.authors     ? info.authors.join(', ') : 'Unknown Author',
         description:   info.description || 'No description available.',
-        thumbnail:     info.imageLinks  ? info.imageLinks.thumbnail : null,
+        thumbnail:     book.volumeInfo.imageLinks?.thumbnail?.replace('http://', 'https://'),
         totalPages:    info.pageCount   || 0,
         googleBooksId: item.id
     };
