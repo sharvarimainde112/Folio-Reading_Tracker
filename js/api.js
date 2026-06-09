@@ -62,7 +62,7 @@ async function updateSidebarUserInfo() {
         const token = localStorage.getItem('folio_token');
         if (!token) return; // ← don't redirect, just skip
 
-        const response = await fetch('http://localhost:5000/api/stats', {
+        const response = await fetch('https://folio-reading-tracker.onrender.com/api', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 

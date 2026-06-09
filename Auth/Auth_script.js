@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://folio-reading-tracker.onrender.com/api';
 
 function toggleCard() {
     document.getElementById('authCard').classList.toggle('flipped');
